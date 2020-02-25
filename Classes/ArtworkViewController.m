@@ -458,11 +458,13 @@ static UIImage *imageWithContentsOfFile(NSString *path)
 				NSArray *allRenditionNames = [assetManager valueForKeyPath:@"catalog.themeStore.store.allRenditionNames"];
 				for (NSString *renditionName in allRenditionNames)
 				{
-					UIImage *image = [assetManager imageNamed:renditionName];
-					NSString *pseudoBundlePath = [[relativePath stringByDeletingLastPathComponent] stringByAppendingFormat:@" %@", archiveName];
-					NSString *filePath = [[pseudoBundlePath stringByAppendingPathComponent:renditionName] stringByAppendingPathExtension:@"png"];
-					if ([image scale] == [[UIScreen mainScreen] scale])
-						[self addImage:image filePath:filePath];
+					@try {
+						UIImage *image = [assetManager imageNamed:renditionName];
+						NSString *pseudoBundlePath = [[relativePath stringByDeletingLastPathComponent] stringByAppendingFormat:@" %@", archiveName];
+						NSString *filePath = [[pseudoBundlePath stringByAppendingPathComponent:renditionName] stringByAppendingPathExtension:@"png"];
+						if ([image scale] == [[UIScreen mainScreen] scale])
+							[self addImage:image filePath:filePath];
+					} @catch (NSException *) {}
 				}
 			}
 		}
@@ -582,7 +584,7 @@ static UIImage *imageWithContentsOfFile(NSString *path)
 	
 	AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
 	NSString *openCommand = [NSString stringWithFormat:@"/usr/bin/open \"%@\"", [appDelegate saveDirectory:nil]];
-	system([openCommand fileSystemRepresentation]);
+//	system([openCommand fileSystemRepresentation]);
 }
 
 // MARK: -

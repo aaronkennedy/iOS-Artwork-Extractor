@@ -15,7 +15,7 @@ void *FindSymbol(struct mach_header *image, const char *symbol)
 	struct symtab_command *symtab = NULL;
 	unsigned int index;
 	
-	struct load_command *cmd = (struct load_command*)((char*)image + sizeof(struct mach_header));
+	struct load_command *cmd = (struct load_command*)((char*)image + sizeof(struct mach_header_64));
 	for (index = 0; index < image->ncmds; index += 1, cmd = (struct load_command*)((char*)cmd + cmd->cmdsize))
 	{
 		switch(cmd->cmd)
